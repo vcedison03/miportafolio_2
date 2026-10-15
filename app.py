@@ -96,8 +96,10 @@ if not st.session_state.iniciado:
                     text_url = libro.get('formats', {}).get('text/plain; charset=us-ascii') or libro.get('formats', {}).get('text/plain; charset=utf-8')
                     
                     if text_url:
-                        raw_text = requests.get(text_url, timeout=30).text
-                        text_clean = re.sub(r'\s+', ' ', raw_text)
+                    # CORRECCIÓN: Forzar HTTPS para evitar bloqueos en servidores en la nube como Render
+                    text_url = text_url.replace("http://", "https://")
+                    raw_text = requests.get(text_url, timeout=30).text
+                    text_clean = re.sub(r"\s+", " ", raw_text)
                         
                         oraciones_filtradas = [
                             o.strip()
