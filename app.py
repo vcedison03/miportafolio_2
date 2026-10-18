@@ -1,30 +1,42 @@
 import streamlit as st
 
-# 1. Configuración de página (solo funciona al primer inicio limpio)
+import streamlit as st
+
+# 1. ESTO ABRE EL PANEL EN EL CELULAR DE FORMA MODERNA
+if "sidebar_state" not in st.session_state:
+    st.session_state.sidebar_state = "expanded"
+
 st.set_page_config(
     page_title="Práctica de Inglés",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state=st.session_state.sidebar_state
 )
 
-# 2. Código de la bandera de fondo
+# 2. ENLACE CORREGIDO DE LA BANDERA DE EE.UU. (Dirección directa a la imagen .svg)
 st.markdown(
     """
     <style>
     [data-testid="stAppViewContainer"] {
         background-image: url("https://wikimedia.org");
         background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
         background-attachment: fixed;
+    }
+    /* Capa blanca semi-transparente para que el texto de tu app no se pierda entre las franjas de la bandera */
+    [data-testid="stAppViewContainer"] > .main {
+        background-color: rgba(255, 255, 255, 0.85); 
     }
     </style>
     """,
     unsafe_allow_html=True
 )
 
-# 3. TRUCO PARA FORZAR EL DESPLIEGUE SIEMPRE (Ignora la memoria del celular)
-if "sidebar_forzada" not in st.session_state:
-    st.session_state["sidebar_forzada"] = True
-    st.toggle("Abrir menú", value=True, label_visibility="collapsed") 
-    st.rerun()
+# El resto de tus importaciones se quedan aquí abajo
+import random
+import re
+
+# ... AQUÍ SIGUE TU CÓDIGO DE REPASO DE INGLÉS ...
+
 
 
 import random
