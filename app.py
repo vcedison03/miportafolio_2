@@ -9,49 +9,49 @@ from gtts import gTTS
 import os
 
 # Configuración de la página y diseño con la gama de azules del portafolio (#2c3e50 y #34495e)
-st.set_page_config(page_title="Test Interactivo de Inglés", page_icon="🇺🇸", layout="centered")
+st.set_page_config(page_title="Test Interactivo de Inglés", page_icon="🎓", layout="centered")
 
-# Estilos CSS personalizados para integrar los colores azules y dar una presentación significativa
+# Estilos CSS personalizados para alinear la estética con la paleta de azules institucional
 st.markdown("""
 <style>
+    /* Estilos generales inspirados en la paleta de azules */
     .stApp {
         background-color: #f8f9fa;
     }
     
-    /* Encabezado principal institucional con la gama de azules */
+    /* Encabezado principal tipo header de portafolio */
     .main-header {
-        background: linear-gradient(135deg, #2c3e50, #34495e);
+        background: #2c3e50;
         color: white;
-        padding: 35px 20px;
+        padding: 30px 20px;
         text-align: center;
-        border-radius: 10px;
+        border-radius: 8px;
         margin-bottom: 25px;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     }
     .main-header h1 {
         color: white;
-        font-size: 2.3rem;
-        margin-bottom: 8px;
-        font-weight: 700;
+        font-size: 2.2rem;
+        margin-bottom: 5px;
     }
     .main-header p {
         color: #ecf0f1;
-        font-size: 1.15rem;
-        opacity: 0.95;
+        font-size: 1.1rem;
+        opacity: 0.9;
     }
 
-    /* Estilo visual para los subtítulos de sección */
-    .section-title {
-        color: #2c3e50;
-        border-bottom: 2px solid #34495e;
-        padding-bottom: 5px;
-        margin-top: 20px;
-        margin-bottom: 15px;
+    /* Tarjetas de configuración y contenedores */
+    .config-container {
+        background: #ffffff;
+        padding: 20px;
+        border-radius: 8px;
+        border-left: 5px solid #34495e;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        margin-bottom: 20px;
     }
 </style>
 
 <div class="main-header">
-    <h1>🇺🇸 Test Interactivo de Inglés</h1>
+    <h1>🎓 Test Interactivo de Inglés</h1>
     <p>Práctica de comprensión auditiva y traducción con fragmentos de libros clásicos</p>
 </div>
 """, unsafe_allow_html=True)
@@ -81,7 +81,7 @@ if 'ultimo_resultado' not in st.session_state:
 if 'mostrar_resultados' not in st.session_state:
     st.session_state.mostrar_resultados = False
 
-# Controles de configuración en la página principal con el engranaje
+# Controles de configuración en la página principal con el engranaje solicitado
 st.markdown("---")
 st.subheader("⚙️ Configuración del Test")
 
@@ -248,3 +248,66 @@ else:
                 enviar = st.form_submit_button("Calificar respuesta", type="primary")
                 
                 if enviar:
+                    if not respuesta_usuario.strip():
+                        st.warning("Por favor escribe una respuesta antes de calificar.")
+                    else:
+                        traductor = GoogleTranslator(source='en', target='es')
+                        es_espanol = 'Español' in modo_traduccion
+                        
+                        esperada = ""
+                        significado_es = ""
+                        try:
+                            if es_espanol:
+                                esperada = traductor.translate(oracion_actual)
+                            else:
+                                significado_es = traductor.translate(oracion_actual)
+                        except Exception:
+                            esperada = oracion_actual
+                            significado_es = oracion_actual
+                            
+                        if es_espanol:
+                            similitud = difflib.SequenceMatcher(None, esperada.lower(), respuesta_usuario.lower()).ratio() * 100
+                        else:
+                            similitud = difflib.SequenceMatcher(None, oracion_actual.lower(), respuesta_usuario.lower()).ratio() * 100
+                            
+                        aprobado = similitud >= umbral_exito
+                        estado_str = "¡Aprobado! ✅" if aprobado else "Por debajo del nivel ❌"
+                        
+                        if aprobado:
+                            st.session_state.aciertos += 1
+                            
+                        st.session_state.total = st.session_state.idx + 1
+                        st.session_state.suma_porcentajes += similitud
+                        
+                        st.session_state.historial.append({
+                            'n': st.session_state.idx + 1,
+                            'oracion': oracion_actual,
+                            'respuesta': respuesta_usuario,
+                            'calificacion': similitud,
+                            'estado_str': estado_str,
+                            'audio': nombre_audio
+                        })
+                        
+                        st.session_state.ultimo_resultado = {
+                            'similitud': similitud,
+                            'estado_str': estado_str,
+                            'es_espanol': es_espanol,
+                            'esperada': esperada,
+                            'significado_es': significado_es,
+                            'respuesta': respuesta_usuario
+                        }
+                        st.session_state.respondido = True
+                        st.rerun()
+        else:
+            res_u = st.session_state.ultimo_resultado
+            st.success(f"Calificación: {res_u['similitud']:.1f}% -> {res_u['estado_str']}")
+            st.write(f"✍️ **Tu respuesta:** {res_u['respuesta']}")
+            if res_u['es_espanol']:
+                st.write(f"🎯 **Traducción esperada:** {res_u['esperada']}")
+            else:
+                st.write(f"📖 **Significado en español:** {res_u['significado_es']}")
+            st.markdown("---")
+            if st.button("Siguiente oración ➡️", type="primary"):
+                st.session_state.idx += 1
+                st.session_state.respondido = False
+                st.rerun()
