@@ -1,4 +1,32 @@
 import streamlit as st
+
+# 1. Configuración de página (solo funciona al primer inicio limpio)
+st.set_page_config(
+    page_title="Práctica de Inglés",
+    initial_sidebar_state="expanded"
+)
+
+# 2. Código de la bandera de fondo
+st.markdown(
+    """
+    <style>
+    [data-testid="stAppViewContainer"] {
+        background-image: url("https://wikimedia.org");
+        background-size: cover;
+        background-attachment: fixed;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+# 3. TRUCO PARA FORZAR EL DESPLIEGUE SIEMPRE (Ignora la memoria del celular)
+if "sidebar_forzada" not in st.session_state:
+    st.session_state["sidebar_forzada"] = True
+    st.toggle("Abrir menú", value=True, label_visibility="collapsed") 
+    st.rerun()
+
+
 import random
 import re
 import requests
