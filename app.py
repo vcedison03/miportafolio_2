@@ -1,7 +1,5 @@
 import streamlit as st
 
-import streamlit as st
-
 # 1. ESTO ABRE EL PANEL EN EL CELULAR DE FORMA MODERNA
 if "sidebar_state" not in st.session_state:
     st.session_state.sidebar_state = "expanded"
