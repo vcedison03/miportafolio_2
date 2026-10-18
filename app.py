@@ -40,9 +40,7 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# El resto de tus importaciones se quedan aquí abajo (limpio, sin repetir)
-import random
-import re
+
 
 # ... AQUÍ CONTINÚA TU CÓDIGO DE REPASO DE INGLÉS (st.title, etc.) ...
 
