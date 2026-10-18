@@ -1,10 +1,5 @@
 import streamlit as st
 
-st.set_page_config(
-    page_title="Práctica de Inglés",
-    initial_sidebar_state="expanded"
-)
-
 import random
 import re
 import requests
