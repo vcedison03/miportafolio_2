@@ -1,50 +1,9 @@
 import streamlit as st
 
-
-# 1. Configuración de página obligatoria al inicio
 st.set_page_config(
     page_title="Práctica de Inglés",
     initial_sidebar_state="expanded"
 )
-
-# 2. TRUCO ABSOLUTO CSS: Bandera de fondo y despliegue móvil obligatorio
-st.markdown(
-    """
-    <style>
-    /* Coloca la bandera de EE.UU. de fondo */
-    [data-testid="stAppViewContainer"] {
-        background-image: url("https://wikimedia.org") !important;
-        background-size: cover !important;
-        background-position: center !important;
-        background-repeat: no-repeat !important;
-        background-attachment: fixed !important;
-    }
-    
-    /* Capa blanca semi-transparente para leer bien el texto */
-    [data-testid="stAppViewContainer"] > .main {
-        background-color: rgba(255, 255, 255, 0.85) !important; 
-    }
-
-    /* ESTO OBLIGA A LA BARRA LATERAL A QUEDAR ABIERTA EN EL CELULAR */
-    @media (max-width: 768px) {
-        /* Fuerza a que el contenedor de la barra lateral se renderice visible */
-        [data-testid="stSidebar"] {
-            left: 0px !important;
-            transform: none !important;
-            width: 16rem !important;
-            visibility: visible !important;
-            display: block !important;
-        }
-        /* Mueve el contenido principal a la derecha para dejar espacio al panel */
-        [data-testid="stAppViewContainer"] > .main {
-            margin-left: 16rem !important;
-        }
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
 
 import random
 import re
