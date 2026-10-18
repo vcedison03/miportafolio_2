@@ -1,40 +1,50 @@
 import streamlit as st
 
-# 1. ESTO ABRE EL PANEL EN EL CELULAR DE FORMA MODERNA
-if "sidebar_state" not in st.session_state:
-    st.session_state.sidebar_state = "expanded"
-
+# 1. Configuración de página nativa
 st.set_page_config(
     page_title="Práctica de Inglés",
-    initial_sidebar_state=st.session_state.sidebar_state
+    initial_sidebar_state="expanded"
 )
 
-# 2. ENLACE CORREGIDO DE LA BANDERA DE EE.UU. (Dirección directa a la imagen .svg)
+# 2. ENLACE CORREGIDO DE LA BANDERA + TRUCO DE CONTROL PARA CELULARES
 st.markdown(
     """
     <style>
+    /* Coloca la bandera real de fondo */
     [data-testid="stAppViewContainer"] {
-        background-image: url("https://wikimedia.org");
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-attachment: fixed;
+        background-image: url("https://wikimedia.org") !important;
+        background-size: cover !important;
+        background-position: center !important;
+        background-repeat: no-repeat !important;
+        background-attachment: fixed !important;
     }
-    /* Capa blanca semi-transparente para que el texto de tu app no se pierda entre las franjas de la bandera */
+    
+    /* Capa blanca semi-transparente para leer bien el texto */
     [data-testid="stAppViewContainer"] > .main {
-        background-color: rgba(255, 255, 255, 0.85); 
+        background-color: rgba(255, 255, 255, 0.85) !important; 
+    }
+
+    /* TRUCO MOVIL: Fuerza a la barra lateral a ser visible en pantallas pequeñas */
+    @media (max-width: 768px) {
+        [data-testid="stSidebarCollapsedControl"] {
+            display: none !important;
+        }
+        [data-testid="stSidebar"] {
+            left: 0px !important;
+            transform: none !important;
+            width: 17rem !important;
+        }
     }
     </style>
     """,
     unsafe_allow_html=True
 )
 
-# El resto de tus importaciones se quedan aquí abajo
+# El resto de tus importaciones se quedan aquí abajo (limpio, sin repetir)
 import random
 import re
 
-# ... AQUÍ SIGUE TU CÓDIGO DE REPASO DE INGLÉS ...
-
+# ... AQUÍ CONTINÚA TU CÓDIGO DE REPASO DE INGLÉS (st.title, etc.) ...
 
 
 import random
