@@ -1,17 +1,5 @@
 import streamlit as st
-# Código para abrir el panel y fijar la bandera de EE.UU. atrás
-st.set_page_config(initial_sidebar_state="expanded")
-st.markdown(
-    """
-    <style>
-    [data-testid="stAppViewContainer"] {
-        background-image: url("https://wikimedia.org");
-        background-size: cover;
-        background-attachment: fixed;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
+
 )
 st.set_page_config(
     page_title="Práctica de Inglés",
